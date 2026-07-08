@@ -29,11 +29,11 @@ export class Manager {
       this.activeCamera.aspect = this.canvas.clientWidth / this.canvas.clientHeight
       this.activeCamera.updateProjectionMatrix()
     }
-    if (this.activeScene == null) {return null}
-
-    // const deltaTime = this.timer.getDelta()
+  
 
     const time = this.timer.getElapsed()
+
+
     this.renderer.render(this.activeScene, this.activeCamera);
   }
 
@@ -64,14 +64,3 @@ export class Manager {
   }
 
 }
-
-// const timer = new Timer();
-
-// function animate(timestamp) {
-//   requestAnimationFrame(animate);
-//   // timestamp is optional
-//   timer.update(timestamp);
-//   const delta = timer.getDelta();
-//   // do something with delta
-//   renderer.render(scene, camera);
-// }
