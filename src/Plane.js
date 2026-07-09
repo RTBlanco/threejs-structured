@@ -20,8 +20,9 @@ export class PlaneObject{
     //   map: texture,
     //   side: THREE.DoubleSide
     // })
-    // const mesh = new THREE.Mesh(planeGeo, planeMat)
-    // mesh.rotation.x = Math.PI * .5
+    // this.planeMesh = new THREE.Mesh(planeGeo, planeMat)
+    // this.planeMesh.rotation.x = Math.PI * .5
+    // this.planeMesh.userData.physics = { mass: 0 }
     // // scene.add(mesh)
 
     // scene.add(mesh)
@@ -29,21 +30,26 @@ export class PlaneObject{
     const geometry = new THREE.BoxGeometry( 10, 0.5, 10 );
     const material = new THREE.MeshStandardMaterial( { color: 0xFFFFFF } );
 
-    const floor = new THREE.Mesh( geometry, material );
-    floor.receiveShadow = true;
+    this.floor = new THREE.Mesh( geometry, material );
+    this.floor.receiveShadow = true;
 
-    floor.position.y = - 0.25;
-    floor.userData.physics = { mass: 0 };
+    this.floor.position.y = - 0.25;
+    this.floor.userData.physics = { mass: 0 };
 
     new THREE.TextureLoader().load( 'textures/grid.png', function ( texture ) {
 
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
       texture.repeat.set( 20, 20 );
-      floor.material.map = texture;
-      floor.material.needsUpdate = true;
+      this.floor.material.map = texture;
+      this.floor.material.needsUpdate = true;
 
     } );
+
+  }
+
+  mesh() {
+    return this.floor
   }
 
   update(time){

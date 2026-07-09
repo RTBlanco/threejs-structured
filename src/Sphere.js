@@ -15,7 +15,7 @@ export class SphereObject {
 
     this.sphereMesh.add(edges)
 
-    this.sphereMesh.position.y = 1
+    this.sphereMesh.position.y = 10
 
     this.speed = 1
     this.keys = {}
@@ -31,6 +31,10 @@ export class SphereObject {
       this.keys[e.code] = false
     })
 
+
+  }
+
+  mesh() {
     return this.sphereMesh
   }
 

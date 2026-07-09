@@ -11,6 +11,10 @@ export class CameraObject{
     return this.camera
   }
 
+  mesh() {
+    return this.camera
+  }
+
   update(time){
 
   }

@@ -16,13 +16,18 @@ export class Manager {
     this.activeScene = scenes.length > 0 ? scenes[0] : new THREE.Scene()
     this.cameras = cameras
     this.activeCamera = cameras.length > 0 ? cameras[0]: new CameraObject()
-    this.initPhysics();
-    this.objects = [
-      new PlaneObject(),
-      new LightObject(), 
-      new SphereObject()
-    ]
+    const ambient = new THREE.HemisphereLight( 0x555555, 0xFFFFFF );
+    this.activeScene.add(ambient)
 
+    this.activeScene.add(new PlaneObject().mesh())
+    this.activeScene.add(new LightObject().mesh()) 
+
+    this.objects = [
+      new SphereObject(),
+    ]
+    
+    this.initPhysics();
+    
     const controls = new OrbitControls(this.activeCamera, this.canvas)
     controls.target.set(0,5,0)
     controls.update()
@@ -39,6 +44,7 @@ export class Manager {
   
 
     for(let i=0; i < this.objects.length; i++){
+      debugger
       this.objects[i].update(time);
     }
 
@@ -51,17 +57,17 @@ export class Manager {
 
 
   async initPhysics() {
-
+    
     //Initialize physics engine using the script in the jsm/physics folder
     this.physics = await RapierPhysics();
-
     this.physics.addScene( this.activeScene );
-
+    
     // addBody( );
+    this._addToScene(this.objects)
 
     //Optionally display collider outlines
     const physicsHelper = new RapierHelper( this.physics.world );
-    this.activeScene  .add( physicsHelper );
+    this.activeScene.add( physicsHelper );
 
     // setInterval( addBody, 1000 );
 
@@ -69,7 +75,8 @@ export class Manager {
 
   _addToScene(items){
     for(let i = 0; i < items.length; i ++){
-      this.activeScene.add(items[i])
+      this.activeScene.add(items[i].mesh())
+      this.physics.addMesh(items[i].mesh(), 1, 0.5 )
     }
   }
 
