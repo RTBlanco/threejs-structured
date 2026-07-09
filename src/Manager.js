@@ -7,7 +7,6 @@ import { SphereObject } from './Sphere';
 
 export class Manager {
   constructor(canvas, scenes=[], cameras=[]) {
-    this.timer = new THREE.Timer
     this.canvas = canvas
     this.renderer = new THREE.WebGLRenderer({antialias: true, canvas: this.canvas})
     this.scenes = scenes
@@ -27,13 +26,13 @@ export class Manager {
   }
 
 
-  update() {
+  update(time) {
     if (this._resizeRendererToDisplaySize(this.renderer)) {
       this.activeCamera.aspect = this.canvas.clientWidth / this.canvas.clientHeight
       this.activeCamera.updateProjectionMatrix()
     }
   
-    const time = this.timer.getElapsed()
+
     for(let i=0; i < this.objects.length; i++){
       this.objects[i].update(time);
     }
