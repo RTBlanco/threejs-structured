@@ -26,4 +26,8 @@ export class PlaneObject{
 
     scene.add(mesh)
   }
+
+  update(time){
+    
+  }
 }

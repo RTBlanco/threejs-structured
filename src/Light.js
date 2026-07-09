@@ -11,4 +11,8 @@ export class LightObject {
   
     scene.add(light)
   }
+
+  update(time){
+    
+  }
 }
