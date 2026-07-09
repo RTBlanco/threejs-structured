@@ -1,63 +1,60 @@
 import * as THREE from 'three'
 
-export class SphereObject {
-  constructor(scene) {
-    const radius = 1
-    const segments = 24
-    const geometry = new THREE.SphereGeometry(radius, segments)
+  export class SphereObject {
+    constructor(scene) {
+      const geometry = new THREE.SphereGeometry(1, 24, 30)
+      const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 })
+      
+      this.sphereMesh = new THREE.Mesh(geometry, material)
 
-    const material = new THREE.MeshPhongMaterial({color: 0x00ff00});
-    this.sphereMesh = new THREE.Mesh(geometry, material);
-    this.sphereMesh.position.y = 1
+      const edgesGeometry = new THREE.EdgesGeometry(geometry, 1)
+      const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 })
+      const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial)
+      this.sphereMesh.add(edges)
 
-    scene.add(this.sphereMesh)
-  }
+      this.sphereMesh.position.y = 1
+      scene.add(this.sphereMesh)
+      
 
-  _moveUp() {
-    console.log('up')
-    this.sphereMesh.position.x -= .001
-  }
+      this.speed = 5
+      this.keys = new Set()
 
-  _moveDown() {
-    console.log('down')
-    this.sphereMesh.position.x += .001
-  }
+      window.addEventListener('keydown', (event) => {
+        this.keys.add(event.key)
+      })
 
-  _moveLeft(){
-    console.log('left')
-    this.sphereMesh.position.z += .001
-  }
-  
-  _moveRight(){
-    console.log('right')
-    this.sphereMesh.position.z -= .001
-  }
+      window.addEventListener('keyup', (event) => {
+        this.keys.delete(event.key)
+      })
+    }
 
-  _move() {
-    addEventListener('keydown', (e) => {
 
-      switch (e.key) {
-        case 'ArrowUp':
-          this._moveUp() 
-          break;
-        case 'ArrowDown':
-          this._moveDown() 
-          break;
 
-        case 'ArrowLeft':
-          this._moveLeft()
-          break;
+    update(deltaTime) {
+      const distance = this.speed * deltaTime
 
-        case 'ArrowRight':
-          this._moveRight() 
-          break;
-
-        default:
-          break;
+      if (this.keys.has('ArrowUp')) {
+        this.sphereMesh.position.x -= distance
+        this.sphereMesh.rotation.z += distance
       }
-    })
+
+      if (this.keys.has('ArrowDown')) {
+        this.sphereMesh.position.x += distance
+        this.sphereMesh.rotation.z -= distance
+      }
+
+      if (this.keys.has('ArrowLeft')) {
+        this.sphereMesh.position.z += distance
+        this.sphereMesh.rotation.x += distance
+      }
+
+      if (this.keys.has('ArrowRight')) {
+        this.sphereMesh.position.z -= distance
+        this.sphereMesh.rotation.x -= distance
+      }
+
+      if(this.keys.has(' ')) {
+        this.sphereMesh.position.y += distance + .2
+      }
+    }
   }
-  update(time){
-    this._move()
-  }
-}
