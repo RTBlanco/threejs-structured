@@ -16,15 +16,16 @@ import * as THREE from 'three'
       scene.add(this.sphereMesh)
 
       this.speed = 5
-      this.keys = new Set()
+      this.keys = {}
 
-      window.addEventListener('keydown', (event) => {
-        this.keys.add(event.key)
+      window.addEventListener('keydown', e => {
+        this.keys[e.code] = true
       })
 
-      window.addEventListener('keyup', (event) => {
-        this.keys.delete(event.key)
+      window.addEventListener('keyup', e => {
+        this.keys[e.code] = false
       })
+
     }
 
 
@@ -32,32 +33,33 @@ import * as THREE from 'three'
     update(deltaTime) {
       const distance = this.speed * deltaTime
 
-      if (this.keys.has('ArrowUp')) {
+
+      if (this.keys["ArrowUp"]) {
         this.sphereMesh.position.x -= distance
         this.sphereMesh.rotation.z += distance
       }
 
-      if (this.keys.has('ArrowDown')) {
+      if (this.keys['ArrowDown']) {
         this.sphereMesh.position.x += distance
         this.sphereMesh.rotation.z -= distance
       }
 
-      if (this.keys.has('ArrowLeft')) {
+      if (this.keys['ArrowLeft']) {
         this.sphereMesh.position.z += distance
         this.sphereMesh.rotation.x += distance
       }
 
-      if (this.keys.has('ArrowRight')) {
+      if (this.keys['ArrowRight']) {
         this.sphereMesh.position.z -= distance
         this.sphereMesh.rotation.x -= distance
       }
 
-      if(this.keys.has(' ')) {
-        this.sphereMesh.position.y += distance + 3
+      if(this.keys['Space']) {
+        this.sphereMesh.position.y += distance + 1
       }
 
       if (this.sphereMesh.position.y > 1){
-        this.sphereMesh.position.y -= distance + .6
+        this.sphereMesh.position.y -= distance + .2 
       }
     }
   }
