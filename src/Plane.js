@@ -27,7 +27,7 @@ export class PlaneObject{
 
     // scene.add(mesh)
 
-    const geometry = new THREE.BoxGeometry( 10, 0.5, 10 );
+    const geometry = new THREE.BoxGeometry( 20, 0.5, 20 );
     const material = new THREE.MeshStandardMaterial( { color: 0xFFFFFF } );
 
     this.floor = new THREE.Mesh( geometry, material );
