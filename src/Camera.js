@@ -7,7 +7,7 @@ export class CameraObject{
     const near = 0.1;
     const far = 1000;
     this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    this.camera.position.set(50, 30, 0);
+    this.camera.position.set(0, 20, 50);
     return this.camera
   }
 
