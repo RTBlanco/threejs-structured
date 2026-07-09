@@ -7,8 +7,10 @@ const canvas = document.querySelector('#c')
 const manager = new Manager(canvas)
 const renderer = manager.renderer
 
-
+const clock = new THREE.Timer()
+clock.connect(document)
 function render() {
-  manager.update();
+  clock.update()
+  manager.update(clock.getDelta());
 }
 manager.renderer.setAnimationLoop(render)
