@@ -77,3 +77,7 @@ The organization is influenced by:
 - Pierfrancesco Soffritti's [`14_ThreejsTemplate`](https://github.com/PierfrancescoSoffritti/doodles/tree/master/14_ThreejsTemplate)
 
 This repository is intentionally a work in progress and will change as I learn more about Three.js and game-oriented architecture.
+
+## My Notes
+
+- I noticed that its better sepreate concerns and only have things worry about its immediate 
