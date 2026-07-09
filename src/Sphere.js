@@ -14,10 +14,6 @@ import * as THREE from 'three'
 
       this.sphereMesh.position.y = 1
       scene.add(this.sphereMesh)
-      
-      this.ground = 1
-      this.jumpHeight = 2.0;       // How high to jump in units
-      this.jumpSpeed = 0.05;
 
       this.speed = 5
       this.keys = new Set()
