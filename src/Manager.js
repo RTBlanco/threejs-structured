@@ -14,13 +14,16 @@ export class Manager {
     this.activeScene = scenes.length > 0 ? scenes[0] : new THREE.Scene()
     this.cameras = cameras
     this.activeCamera = cameras.length > 0 ? cameras[0]: new CameraObject()
-
+    this.objects = [
+      new PlaneObject(this.activeScene),
+      new LightObject(this.activeScene), 
+      new SphereObject(this.activeScene)
+    ]
 
     const controls = new OrbitControls(this.activeCamera, this.canvas)
     controls.target.set(0,5,0)
     controls.update()
 
-    this._buildObjects()
   }
 
 
@@ -30,19 +33,15 @@ export class Manager {
       this.activeCamera.updateProjectionMatrix()
     }
   
-
     const time = this.timer.getElapsed()
+    for(let i=0; i < this.objects.length; i++){
+      this.objects[i].update(time);
+    }
+
+    
 
 
     this.renderer.render(this.activeScene, this.activeCamera);
-  }
-
-  _buildObjects() {
-    const objects = [
-      new PlaneObject(this.activeScene),
-      new LightObject(this.activeScene), 
-      new SphereObject(this.activeScene)
-    ]
   }
 
   _resizeRendererToDisplaySize(renderer, maxPixelCount=3840*2160) {
