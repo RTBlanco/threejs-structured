@@ -1,7 +1,9 @@
 import * as THREE from 'three'
+import { RapierPhysics } from 'three/addons/physics/RapierPhysics.js';
+import { RapierHelper } from 'three/addons/helpers/RapierHelper.js';
 
 export class SphereObject {
-  constructor(scene) {
+  constructor() {
     const geometry = new THREE.SphereGeometry(1, 24, 30)
     const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 })
     
@@ -10,10 +12,10 @@ export class SphereObject {
     const edgesGeometry = new THREE.EdgesGeometry(geometry, 1)
     const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 })
     const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial)
+
     this.sphereMesh.add(edges)
 
     this.sphereMesh.position.y = 1
-    scene.add(this.sphereMesh)
 
     this.speed = 1
     this.keys = {}
@@ -28,6 +30,8 @@ export class SphereObject {
     window.addEventListener('keyup', e => {
       this.keys[e.code] = false
     })
+
+    return this.sphereMesh
   }
 
   update(deltaTime) {
@@ -53,10 +57,6 @@ export class SphereObject {
     this.sphereMesh.position.x += this.velocity.x
     this.sphereMesh.position.z += this.velocity.z
 
-    // rotate based on velocity
-    this.sphereMesh.rotation.z -= this.velocity.x
-    this.sphereMesh.rotation.x += this.velocity.z
-
     // friction / damping
     this.velocity.x *= this.friction
     this.velocity.z *= this.friction
@@ -65,8 +65,5 @@ export class SphereObject {
       this.sphereMesh.position.y += acceleration + 1
     }
 
-    if (this.sphereMesh.position.y > 1) {
-      this.sphereMesh.position.y -= acceleration + 0.5
-    }
   }
 }
