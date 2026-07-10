@@ -7,6 +7,7 @@ import { SphereObject } from './Sphere';
 
 import { RapierPhysics } from 'three/addons/physics/RapierPhysics.js';
 import { RapierHelper } from 'three/addons/helpers/RapierHelper.js';
+import { BlockObject } from './Block';
 
 export class Manager {
   constructor(canvas, scenes=[], cameras=[]) {
@@ -25,6 +26,7 @@ export class Manager {
 
     this.objects = [
       new SphereObject(),
+      new BlockObject()
     ]
     
     this.initPhysics();
@@ -73,6 +75,7 @@ export class Manager {
 
   _addToScene(items){
     for (const item of items) {
+      console.log(item)
       const mesh = item.mesh();
 
       this.activeScene.add(mesh);

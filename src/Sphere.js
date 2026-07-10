@@ -4,7 +4,7 @@ import { RapierHelper } from 'three/addons/helpers/RapierHelper.js';
 
 export class SphereObject {
   constructor() {
-    const geometry = new THREE.SphereGeometry(1, 24, 30)
+    const geometry = new THREE.SphereGeometry(1)
     
     const loader = new THREE.TextureLoader()
     const texture = loader.load("../public/textures/balldimpled.png")
@@ -22,16 +22,6 @@ export class SphereObject {
     // this.speed = 1
     // this.keys = {}
 
-
-    // window.addEventListener('keydown', e => {
-    //   this.keys[e.code] = true
-    // })
-
-    // window.addEventListener('keyup', e => {
-    //   this.keys[e.code] = false
-    // })
-
-    // Movement input
     this.onGround = false
     this.jumpQueued = false
     this.movement = { forward: 0, right: 0 };
