@@ -5,11 +5,20 @@ import { RapierHelper } from 'three/addons/helpers/RapierHelper.js';
 export class SphereObject {
   constructor() {
     const geometry = new THREE.SphereGeometry(1, 24, 30)
-    const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 })
     
+    const loader = new THREE.TextureLoader()
+    const texture = loader.load("../public/textures/balldimpled.png")
+    texture.colorSpace = THREE.SRGBColorSpace
+
+    const material = new THREE.MeshPhongMaterial({  
+      map: texture
+    })
+
     this.sphereMesh = new THREE.Mesh(geometry, material)
     this.sphereMesh.position.y = 10
     this.sphereMesh.castShadow = true;
+
+    
     // this.speed = 1
     // this.keys = {}
 
@@ -47,51 +56,12 @@ export class SphereObject {
   
     } );
 
-
-    // this.characterController = physics.world.createCharacterController( 0.01 );
-    // this.characterController.setApplyImpulsesToDynamicBodies( true );
-    // this.characterController.setCharacterMass( 3 );
-    // const colliderDesc = physics.RAPIER.ColliderDesc.capsule( 0.5, 0.3 ).setTranslation( 0, 0.8, 0 );
-    // this.sphereMesh.userData.collider = physics.world.createCollider( colliderDesc );
-
   }
 
   mesh() {
     return this.sphereMesh
   }
 
-  // update(deltaTime) {
-  //   const acceleration = this.speed * deltaTime
-
-  //   if (this.keys["ArrowUp"]) {
-  //     this.velocity.x -= acceleration
-  //   }
-
-  //   if (this.keys["ArrowDown"]) {
-  //     this.velocity.x += acceleration
-  //   }
-
-  //   if (this.keys["ArrowLeft"]) {
-  //     this.velocity.z += acceleration
-  //   }
-
-  //   if (this.keys["ArrowRight"]) {
-  //     this.velocity.z -= acceleration
-  //   }
-
-  //   // apply movement from velocity
-  //   this.sphereMesh.position.x += this.velocity.x
-  //   this.sphereMesh.position.z += this.velocity.z
-
-  //   // friction / damping
-  //   this.velocity.x *= this.friction
-  //   this.velocity.z *= this.friction
-
-  //   if (this.keys["Space"]) {
-  //     this.sphereMesh.position.y += acceleration + 1
-  //   }
-
-  // }
 
   update(deltaTime) {
     const mesh = this.sphereMesh;
