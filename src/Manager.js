@@ -46,9 +46,8 @@ export class Manager {
   
     
     for(let i=0; i < this.objects.length; i++){
-      debugger
       this.objects[i].update(time);
-      if ( this.physics && this.characterController ) {
+      if ( this.physics ) {
         this._movement(time, this.objects[i])
       }
     }
@@ -76,41 +75,26 @@ export class Manager {
 
   }
 
-  _controls(player) {
-    // Rapier Character Controller
-    this.characterController = this.physics.world.createCharacterController( 0.01 );
-    this.characterController.setApplyImpulsesToDynamicBodies( true );
-    this.characterController.setCharacterMass( 3 );
-    const colliderDesc = this.physics.RAPIER.ColliderDesc.ball(1, 24, 30).setTranslation( 0, 0.8, 0 );
-    player.userData.collider = this.physics.world.createCollider( colliderDesc );
-  }
-
   _movement(deltaTime, player) {
+    const mesh = player.mesh();
+    const body = mesh.userData.physics?.body;
+    if ( ! body ) return;
 
-    // Character movement
-    const speed = 5 * deltaTime;
-    const moveVector = new this.physics.RAPIER.Vector3( player.movement.right * speed, 0, - player.movement.forward * speed );
+    const speed = 6;
+    const direction = new THREE.Vector3( player.movement.right, 0, - player.movement.forward );
+    if ( direction.lengthSq() > 1 ) direction.normalize();
 
-    this.characterController.computeColliderMovement( player.mesh().userData.collider, moveVector );
-
-    // Read the result.
-    const translation = this.characterController.computedMovement();
-    const position = player.mesh().userData.collider.translation();
-
-    position.x += translation.x;
-    position.y += translation.y;
-    position.z += translation.z;
-
-    player.mesh().userData.collider.setTranslation( position );
-
-    // Sync Three.js mesh with Rapier collider
-    player.mesh().position.set( position.x, position.y, position.z );
+    const velocity = body.linvel();
+    body.setLinvel( {
+      x: direction.x * speed,
+      y: velocity.y,
+      z: direction.z * speed,
+    }, true );
   }
 
   _addToScene(items){
     for(let i = 0; i < items.length; i ++){
-      this._controls(items[i].mesh())
-      // this.activeScene.add(items[i].mesh())
+      this.activeScene.add(items[i].mesh())
       this.physics.addMesh(items[i].mesh(), 1, 0.5 )
     }
   }
