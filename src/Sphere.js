@@ -9,7 +9,7 @@ export class SphereObject {
     
     this.sphereMesh = new THREE.Mesh(geometry, material)
     this.sphereMesh.position.y = 10
-
+    this.sphereMesh.castShadow = true;
     // this.speed = 1
     // this.keys = {}
 
