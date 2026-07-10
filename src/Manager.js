@@ -19,7 +19,8 @@ export class Manager {
     const ambient = new THREE.HemisphereLight( 0x555555, 0xFFFFFF );
     this.activeScene.add(ambient)
 
-    this.activeScene.add(new PlaneObject().mesh())
+    this.floor = new PlaneObject()
+    this.activeScene.add(this.floor.mesh())
     this.activeScene.add(new LightObject().mesh()) 
 
     this.objects = [
@@ -73,6 +74,8 @@ export class Manager {
     
     this._addToScene(this.objects)
 
+    // let rigidBodyDesc = this.physics.RAPIER.RigidBodyDesc.dynamic().setGravityScale(1000.0, true);
+    // this.physics.world.createRigidBody(rigidBodyDesc);
   }
 
   _movement(deltaTime, player) {
@@ -80,15 +83,23 @@ export class Manager {
     const body = mesh.userData.physics?.body;
     if ( ! body ) return;
 
+    // console.log(this.physics.world.gravity)
     const speed = 6;
-    const direction = new THREE.Vector3( player.movement.right, player.movement.jump, - player.movement.forward );
+    const direction = new THREE.Vector3( player.movement.right, 0, - player.movement.forward );
     if ( direction.lengthSq() > 1 ) direction.normalize();
 
     const velocity = body.linvel();
+    const position = body.translation();
+   
+    const isGrounded = position.y <= 2 ;
+    const jumpVelocity = player.jumpQueued && isGrounded ? 8 : velocity.y ;
+
+    player.onGround = isGrounded;
+    player.jumpQueued = false;
+
     body.setLinvel( {
       x: direction.x * speed,
-      // y: velocity.y,
-      y: direction.y * speed + velocity.y,
+      y: jumpVelocity,
       z: direction.z * speed,
     }, true );
   }
