@@ -94,25 +94,28 @@ export class SphereObject {
   // }
 
   update(deltaTime) {
-    // const deltaTime = 1 / 60;
+    const mesh = this.sphereMesh;
+    const body = mesh.userData.physics?.body;
+    if (!body) return;
 
-    // Character movement
-    // const speed = 2.5 * deltaTime;
-    // const moveVector = new physics.RAPIER.Vector3( movement.right * speed, 0, - movement.forward * speed );
+    const speed = 6;
+    const direction = new THREE.Vector3(this.movement.right, 0, -this.movement.forward);
+    if (direction.lengthSq() > 1) direction.normalize();
 
-    // characterController.computeColliderMovement( player.userData.collider, moveVector );
+    const velocity = body.linvel();
+    const position = body.translation();
+    const isGrounded = position.y <= 1.5;
 
-    // // Read the result.
-    // const translation = characterController.computedMovement();
-    // const position = player.userData.collider.translation();
+    const hasMovementInput = direction.lengthSq() > 0;
 
-    // position.x += translation.x;
-    // position.y += translation.y;
-    // position.z += translation.z;
+    body.setLinvel({
+      // Keep the existing velocity after releasing the keys.
+      x: hasMovementInput ? direction.x * speed : velocity.x,
+      y: this.jumpQueued && isGrounded ? 25 : velocity.y,
+      z: hasMovementInput ? direction.z * speed : velocity.z,
+    }, true);
 
-    // player.userData.collider.setTranslation( position );
-
-    // // Sync Three.js mesh with Rapier collider
-    // player.position.set( position.x, position.y, position.z );
+    this.onGround = isGrounded;
+    this.jumpQueued = false;
   }
 }
