@@ -81,39 +81,68 @@ export class Manager {
 
   _movement(deltaTime, player) {
   
-    const body = mesh.userData.physics?.body;
-    if ( ! body ) return;
+    // const body = mesh.userData.physics?.body;
+    // if ( ! body ) return;
 
-    // console.log(this.physics.world.gravity)
+    // // console.log(this.physics.world.gravity)
+    // const speed = 6;
+    // const smoothSpeed = 1
+    // const direction = new THREE.Vector3( player.movement.right, 0, - player.movement.forward );
+    // if ( direction.lengthSq() > 1 ) direction.normalize();
+
+    // const velocity = body.linvel();
+    // const position = body.translation();
+   
+    // const isGrounded = position.y <= 1.5 ;
+    // const jumpVelocity = player.jumpQueued && isGrounded ? 25 : velocity.y  ;
+
+    // player.onGround = isGrounded;
+    // player.jumpQueued = false;
+
+    // body.setLinvel( {
+    //   // x: THREE.MathUtils.damp(direction.x, direction.x * speed, smoothSpeed, deltaTime),
+    //   x: direction.x * speed,
+    //   y: jumpVelocity,
+    //   z: direction.z * speed,
+    // }, true );
+
+    const mesh = player.mesh();
+    const body = mesh.userData.physics?.body;
+    if (!body) return;
+
     const speed = 6;
-    const smoothSpeed = 1
-    const direction = new THREE.Vector3( player.movement.right, 0, - player.movement.forward );
-    if ( direction.lengthSq() > 1 ) direction.normalize();
+    const direction = new THREE.Vector3(player.movement.right, 0, -player.movement.forward);
+    if (direction.lengthSq() > 1) direction.normalize();
 
     const velocity = body.linvel();
     const position = body.translation();
-   
-    const isGrounded = position.y <= 1.5 ;
-    const jumpVelocity = player.jumpQueued && isGrounded ? 25 : velocity.y  ;
+    const isGrounded = position.y <= 1.5;
+
+    const hasMovementInput = direction.lengthSq() > 0;
+
+    body.setLinvel({
+      // Keep the existing velocity after releasing the keys.
+      x: hasMovementInput ? direction.x * speed : velocity.x,
+      y: player.jumpQueued && isGrounded ? 25 : velocity.y,
+      z: hasMovementInput ? direction.z * speed : velocity.z,
+    }, true);
 
     player.onGround = isGrounded;
     player.jumpQueued = false;
-
-    body.setLinvel( {
-      // x: THREE.MathUtils.damp(direction.x, direction.x * speed, smoothSpeed, deltaTime),
-      x: direction.x * speed,
-      y: jumpVelocity,
-      z: direction.z * speed,
-    }, true );
   }
 
   _addToScene(items){
-    for(let i = 0; i < items.length; i ++){
-      this.activeScene.add(items[i].mesh())
-      this.physics.addMesh(items[i].mesh(), 1, 1 )
-      // items[i].mesh().userData.physics?.body.setLinearDamping(.01)
-      // items[i].mesh().userData.physics?.body.setAngularDamping(.01)
-      items[i].mesh().userData.physics?.body.setGravityScale(10.0, true)
+    for (const item of items) {
+      const mesh = item.mesh();
+
+      this.activeScene.add(mesh);
+      this.physics.addMesh(mesh, 1, 1);
+
+      const body = mesh.userData.physics?.body;
+
+      body?.setLinearDamping(1.5);
+      body?.setAngularDamping(1.5);
+      body?.setGravityScale(10, true);
     }
   }
 
