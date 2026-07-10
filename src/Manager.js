@@ -81,13 +81,14 @@ export class Manager {
     if ( ! body ) return;
 
     const speed = 6;
-    const direction = new THREE.Vector3( player.movement.right, 0, - player.movement.forward );
+    const direction = new THREE.Vector3( player.movement.right, player.movement.jump, - player.movement.forward );
     if ( direction.lengthSq() > 1 ) direction.normalize();
 
     const velocity = body.linvel();
     body.setLinvel( {
       x: direction.x * speed,
-      y: velocity.y,
+      // y: velocity.y,
+      y: direction.y * speed + velocity.y,
       z: direction.z * speed,
     }, true );
   }
