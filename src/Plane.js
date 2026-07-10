@@ -36,7 +36,7 @@ export class PlaneObject{
     this.floor.position.y = - 0.25;
     this.floor.userData.physics = { mass: 0 };
 
-    new THREE.TextureLoader().load( 'textures/grid.png', function ( texture ) {
+    new THREE.TextureLoader().load('https://threejs.org/manual/examples/resources/images/checker.png', ( texture ) => {
 
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
