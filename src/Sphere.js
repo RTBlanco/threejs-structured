@@ -23,7 +23,7 @@ export class SphereObject {
     // })
 
     // Movement input
-    this.movement = { forward: 0, right: 0 };
+    this.movement = { forward: 0, right: 0 , jump: 0};
 
     window.addEventListener( 'keydown', ( event ) => {
 
@@ -31,6 +31,7 @@ export class SphereObject {
       if ( event.key === 's' || event.key === 'ArrowDown' ) this.movement.forward = - 1;
       if ( event.key === 'a' || event.key === 'ArrowLeft' ) this.movement.right = - 1;
       if ( event.key === 'd' || event.key === 'ArrowRight' ) this.movement.right = 1;
+      if ( event.key === ' ') this.movement.jump = 0.1
   
     } );
 
@@ -38,6 +39,7 @@ export class SphereObject {
   
       if ( event.key === 'w' || event.key === 's' || event.key === 'ArrowUp' || event.key === 'ArrowDown' ) this.movement.forward = 0;
       if ( event.key === 'a' || event.key === 'd' || event.key === 'ArrowLeft' || event.key === 'ArrowRight' ) this.movement.right = 0;
+      if ( event.key === ' ') this.movement.jump = 0
   
     } );
 
