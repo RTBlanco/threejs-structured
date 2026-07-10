@@ -74,6 +74,7 @@ export class Manager {
     
     this._addToScene(this.objects)
 
+    this.physics.body.setGravityScale(2.0, true);
     // let rigidBodyDesc = this.physics.RAPIER.RigidBodyDesc.dynamic().setGravityScale(1000.0, true);
     // this.physics.world.createRigidBody(rigidBodyDesc);
   }
@@ -92,7 +93,7 @@ export class Manager {
     const position = body.translation();
    
     const isGrounded = position.y <= 2 ;
-    const jumpVelocity = player.jumpQueued && isGrounded ? 50 : velocity.y - 1 ;
+    const jumpVelocity = player.jumpQueued && isGrounded ? 50 : velocity.y  ;
 
     player.onGround = isGrounded;
     player.jumpQueued = false;
@@ -108,6 +109,9 @@ export class Manager {
     for(let i = 0; i < items.length; i ++){
       this.activeScene.add(items[i].mesh())
       this.physics.addMesh(items[i].mesh(), 1, .9 )
+      // items[i].mesh().userData.physics?.body.setLinearDamping(.01)
+      // items[i].mesh().userData.physics?.body.setAngularDamping(.01)
+      items[i].mesh().userData.physics?.body.setGravityScale(10.0, true)
     }
   }
 
