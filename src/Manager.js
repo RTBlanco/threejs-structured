@@ -92,7 +92,7 @@ export class Manager {
     const position = body.translation();
    
     const isGrounded = position.y <= 2 ;
-    const jumpVelocity = player.jumpQueued && isGrounded ? 8 : velocity.y ;
+    const jumpVelocity = player.jumpQueued && isGrounded ? 50 : velocity.y - 1 ;
 
     player.onGround = isGrounded;
     player.jumpQueued = false;
@@ -107,7 +107,7 @@ export class Manager {
   _addToScene(items){
     for(let i = 0; i < items.length; i ++){
       this.activeScene.add(items[i].mesh())
-      this.physics.addMesh(items[i].mesh(), 1, 0.5 )
+      this.physics.addMesh(items[i].mesh(), 1, .9 )
     }
   }
 
